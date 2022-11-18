@@ -18,6 +18,11 @@ export class MintService {
         const mint_tx = anchor.web3.Transaction.from(serialized_tx);
         
         mint_tx.partialSign(admin.payer)
-        return mint_tx
+
+        const serialized_tx_2 = mint_tx.serialize({
+            requireAllSignatures: false
+        });
+
+        return serialized_tx_2.toString("base64")
     }
 }
