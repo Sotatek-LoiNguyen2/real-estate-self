@@ -3,10 +3,15 @@ import * as anchor from '@project-serum/anchor';
 import { AnchorProvider, web3 } from '@project-serum/anchor';
 const { SystemProgram } = web3;
 import * as bs58 from 'bs58'
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class MintService {
-    mint(base64_serialized_tx: string,secretkey: string){
+
+    constructor(private readonly configService: ConfigService){}
+
+    mint(base64_serialized_tx: string){
+        const secretkey = this.configService.get<string>('SECRET_KEY')
         const adminKeyPair = anchor.web3.Keypair.fromSecretKey(
             Uint8Array.from(
                bs58.decode(secretkey)
